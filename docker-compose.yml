@@ -1,0 +1,135 @@
+version: '3.3'
+services:
+  redis_master:
+    image: redis
+    container_name: redis_master
+    volumes:
+      - /Users/november/Docker/file/redis_colony/redis_master/conf/:/usr/local/etc/redis/
+      - /Users/november/Docker/file/redis_colony/redis_master/data:/data 
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - 6380:6379
+    tty: true
+    networks:
+      dev:
+        ipv4_address: 172.18.0.2
+  redis_servant0:
+    image: redis
+    depends_on: 
+      - redis_master
+    container_name: redis_servant0
+    volumes:
+      - /Users/november/Docker/file/redis_colony/redis_servant0/conf/:/usr/local/etc/redis/
+      - /Users/november/Docker/file/redis_colony/redis_servant0/data:/data 
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - 6381:6379
+    tty: true
+    networks:
+      dev:
+        ipv4_address: 172.18.0.3
+  redis_servant1:
+    image: redis
+    depends_on: 
+      - redis_master
+    container_name: redis_servant1
+    volumes:
+      - /Users/november/Docker/file/redis_colony/redis_servant1/conf/:/usr/local/etc/redis/
+      - /Users/november/Docker/file/redis_colony/redis_servant1/data:/data 
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - 6382:6379
+    tty: true
+    networks:
+      dev:
+        ipv4_address: 172.18.0.4
+  redis_servant2:
+    image: redis
+    depends_on: 
+      - redis_master
+    container_name: redis_servant2
+    volumes:
+      - /Users/november/Docker/file/redis_colony/redis_servant2/conf/:/usr/local/etc/redis/
+      - /Users/november/Docker/file/redis_colony/redis_servant2/data:/data 
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - 6383:6379
+    tty: true
+    networks:
+      dev:
+        ipv4_address: 172.18.0.5
+  redis_master_sentinel:
+    image: redis
+    depends_on: 
+      - redis_servant0
+      - redis_servant1
+      - redis_servant2
+    container_name: redis_master_sentinel
+    volumes:
+      - /Users/november/Docker/file/redis_colony/redis_master_sentinel/conf/:/usr/local/etc/redis/
+      - /Users/november/Docker/file/redis_colony/redis_master_sentinel/data:/data 
+    command: redis-sentinel /usr/local/etc/redis/sentinel.conf
+    ports:
+      - 26380:26379
+    tty: true
+    networks:
+      dev:
+        ipv4_address: 172.18.0.6
+  redis_servant0_sentinel:
+    image: redis
+    depends_on: 
+      - redis_servant0
+      - redis_servant1
+      - redis_servant2
+    container_name: redis_servant0_sentinel
+    volumes:
+      - /Users/november/Docker/file/redis_colony/redis_servant0_sentinel/conf/:/usr/local/etc/redis/
+      - /Users/november/Docker/file/redis_colony/redis_servant0_sentinel/data:/data 
+    command: redis-sentinel /usr/local/etc/redis/sentinel.conf
+    ports:
+      - 26381:26379
+    tty: true
+    networks:
+      dev:
+        ipv4_address: 172.18.0.7
+  redis_servant1_sentinel:
+    image: redis
+    depends_on: 
+      - redis_servant0
+      - redis_servant1
+      - redis_servant2
+    container_name: redis_servant1_sentinel
+    volumes:
+      - /Users/november/Docker/file/redis_colony/redis_servant1_sentinel/conf/:/usr/local/etc/redis/
+      - /Users/november/Docker/file/redis_colony/redis_servant1_sentinel/data:/data 
+    command: redis-sentinel /usr/local/etc/redis/sentinel.conf
+    ports:
+      - 26382:26379
+    tty: true
+    networks:
+      dev:
+        ipv4_address: 172.18.0.8
+  redis_servant2_sentinel:
+    image: redis
+    depends_on: 
+      - redis_servant0
+      - redis_servant1
+      - redis_servant2
+    container_name: redis_servant2_sentinel
+    volumes:
+      - /Users/november/Docker/file/redis_colony/redis_servant2_sentinel/conf/:/usr/local/etc/redis/
+      - /Users/november/Docker/file/redis_colony/redis_servant2_sentinel/data:/data 
+    command: redis-sentinel /usr/local/etc/redis/sentinel.conf
+    ports:
+      - 26383:26379
+    tty: true
+    networks:
+      dev:
+        ipv4_address: 172.18.0.9
+    
+networks:
+  dev:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.18.0.0/24"

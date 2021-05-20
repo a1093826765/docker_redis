@@ -1,0 +1,1 @@
+docker run -dit -p 6381:6379 --network redis_network --network-alias redis_servant0 --name redis_colony_servant0 -v /Users/november/Docker/file/redis_colony/redis_servant0/conf/:/usr/local/etc/redis/ -v /Users/november/Docker/file/redis_colony/redis_servant0/data:/data redis redis-server /usr/local/etc/redis/redis.conf

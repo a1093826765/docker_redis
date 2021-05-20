@@ -1,0 +1,1 @@
+docker run -dit -p 26380:26379 --network redis_network --network-alias redis_master_sentinel --name redis_colony_master_sentinel -v /Users/november/Docker/file/redis_colony/redis_master_sentinel/conf/:/usr/local/etc/redis/ -v /Users/november/Docker/file/redis_colony/redis_master_sentinel/data:/data redis redis-sentinel /usr/local/etc/redis/sentinel.conf

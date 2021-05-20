@@ -1,0 +1,1 @@
+docker run -dit -p 6380:6379 --network redis_network --network-alias redis_master --name redis_colony_master -v /Users/november/Docker/file/redis_colony/redis_master/conf/:/usr/local/etc/redis/ -v /Users/november/Docker/file/redis_colony/redis_master/data:/data redis redis-server /usr/local/etc/redis/redis.conf
